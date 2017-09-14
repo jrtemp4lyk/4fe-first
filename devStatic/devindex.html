@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <script src="/jquery-1.11.2.min.js"></script>
+  <script type="text/javascript">
+    function GetQueryString(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2]);
+      return null;
+    }
+    var d = {
+      loginname: GetQueryString('loginname'),
+      pwd: GetQueryString('pwd'),
+      encrypt: "ON"
+    };
+    $.ajax({
+      url: '/wbalone/sso/appLogin',
+      data: JSON.stringify(d),
+      // data: d,
+      type: "post",
+      contentType: 'application/json',
+      success: function(data) {
+        if (data.success === true) {
+            window.location.href = GetQueryString('autoOpenUrl');
+        } else {
+          alert(data.data);
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
